@@ -5,7 +5,7 @@ var range = require('range-parser')
 var qs = require('querystring')
 var corsify = require('corsify')
 var pkg = require('./package.json')
-var debug = require('debug')('hyperdrive-http')
+var debug = require('debug')('dwebfs-http')
 
 module.exports = serve
 
@@ -137,16 +137,16 @@ function ondirectoryindex (archive, name, req, res, opts) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8')
     res.setHeader('Content-Length', Buffer.byteLength(html))
     if (opts.exposeHeaders) {
-      res.setHeader('Hyperdrive-Key', archive.key.toString('hex'))
-      res.setHeader('Hyperdrive-Version', archive.version)
-      res.setHeader('Hyperdrive-Http-Version', pkg.version)
+      res.setHeader('DWebFs-Key', archive.key.toString('hex'))
+      res.setHeader('DWebFs-Version', archive.version)
+      res.setHeader('DWebFs-Http-Version', pkg.version)
     }
     res.end(html)
   })
 }
 
 function getManifest (archive, cb) {
-  archive.readFile('/dat.json', 'utf-8', function (err, data) {
+  archive.readFile('/dweb.json', 'utf-8', function (err, data) {
     if (err) return cb(err)
     try {
       var parsed = JSON.parse(data)
@@ -155,7 +155,7 @@ function getManifest (archive, cb) {
     }
 
     if (!parsed || Array.isArray(parsed) || (typeof parsed !== 'object')) {
-      return cb(new Error('Invalid dat.json format'))
+      return cb(new Error('Invalid dweb.json format'))
     }
 
     cb(null, parsed)

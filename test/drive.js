@@ -3,15 +3,15 @@ var fs = require('fs')
 var path = require('path')
 var test = require('tape')
 var memdb = require('memdb')
-var hyperdrive = require('hyperdrive')
+var dwebfs = require('dwebfs')
 var request = require('request')
 var raf = require('random-access-file')
 var ndjson = require('ndjson')
 var hyperdriveHttp = require('..')
 var collect = require('collect-stream')
-var encoding = require('dat-encoding')
+var encoding = require('dweb-encoding')
 
-var drive = hyperdrive(memdb())
+var drive = dwebfs(memdb())
 var archive1 = drive.createArchive({
   file: function (name) {
     return raf(path.join(__dirname, name))
@@ -37,7 +37,7 @@ test('setup', function (t) {
     archive1.append('feed.js', function () {
       archive1.append('drive.js', function () {
         archive2.append('drive.js', function () {
-          archive4.append('dat.json', function () {
+          archive4.append('dweb.json', function () {
             archive4.append('404.html', function () {
               t.end()
             })
@@ -88,7 +88,7 @@ test('Single Archive POST File', function (t) {
       if (!err && res.statusCode === 200) {
         t.equal(body.toString(), encoding.encode(archive3.key), 'Responds with key')
         collect(archive3.createFileReadStream('file'), function (err, body) {
-          t.error(err, 'no hyperdrive error')
+          t.error(err, 'no dwebfs error')
           t.same(body, fs.readFileSync(path.join(__dirname, 'drive.js')))
           t.end()
         })
@@ -165,7 +165,7 @@ test('Multiple Archive POST File', function (t) {
       if (!err && res.statusCode === 200) {
         t.equal(body.toString(), encoding.encode(archive3.key), 'Responds with key')
         collect(archive3.createFileReadStream('file'), function (err, body) {
-          t.error(err, 'no hyperdrive error')
+          t.error(err, 'no dwebfs error')
           t.same(body, fs.readFileSync(path.join(__dirname, 'drive.js')))
           t.end()
         })
@@ -183,7 +183,7 @@ test('Multiple Archive POST File 2', function (t) {
       if (!err && res.statusCode === 200) {
         t.equal(body.toString(), encoding.encode(archive3.key), 'Responds with key')
         collect(archive3.createFileReadStream('file'), function (err, body) {
-          t.error(err, 'no hyperdrive error')
+          t.error(err, 'no dwebfs error')
           t.same(body, fs.readFileSync(path.join(__dirname, 'drive.js')))
           t.end()
         })

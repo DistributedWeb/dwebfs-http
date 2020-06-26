@@ -1,11 +1,11 @@
 var http = require('http')
 var test = require('tape')
 var memdb = require('memdb')
-var hypercore = require('hypercore')
+var ddatabase = require('ddatabase')
 var request = require('request')
 var hyperdriveHttp = require('..')
 
-var core = hypercore(memdb())
+var core = ddatabase(memdb())
 var feed1 = core.createFeed()
 var feed2 = core.createFeed()
 var server = http.createServer()

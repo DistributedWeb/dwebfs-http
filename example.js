@@ -1,10 +1,10 @@
 var http = require('http')
 var fs = require('fs')
-var hyperdrive = require('hyperdrive')
+var dwebfs = require('dwebfs')
 var ram = require('random-access-memory')
 var serve = require('.')
 
-var archive = hyperdrive(ram)
+var archive = dwebfs(ram)
 
 var server = http.createServer(serve(archive, { exposeHeaders: true, live: true }))
 

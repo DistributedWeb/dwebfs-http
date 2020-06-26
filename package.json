@@ -7,9 +7,9 @@
     "test": "standard"
   },
   "keywords": [
-    "hypercore",
-    "hyperdrive",
-    "dat"
+    "ddatabase",
+    "dwebfs",
+    "dweb"
   ],
   "author": "Joe Hand <joe@hand.email>",
   "license": "MIT",
